@@ -34,6 +34,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.status.name = name
         }
         requestPermissions()
+        refreshPermissions()
+        // A rebuilt app loses its grants, so keep checking while the window is open.
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in self?.refreshPermissions() }
         driver.start()
         if showSettingsAtLaunch { openSettings() }
     }
@@ -48,6 +51,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) != kIOHIDAccessTypeGranted {
             IOHIDRequestAccess(kIOHIDRequestTypeListenEvent)
         }
+    }
+
+    private func refreshPermissions() {
+        status.permissionsOK = CGPreflightPostEventAccess()
+            && IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOHIDAccessTypeGranted
     }
 
     @objc func openSettings() {

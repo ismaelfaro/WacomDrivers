@@ -4,17 +4,28 @@
 //   Wacom Bamboo --background     start in the menu bar only
 //   Wacom Bamboo --dump           print raw HID reports, no pointer control (diagnostics)
 //   Wacom Bamboo --verbose        also print raw touch packets while running
+//   Wacom Bamboo --check          print whether the two required permissions are granted
 
 import AppKit
 import Foundation
+import IOKit.hid
+
+setvbuf(stdout, nil, _IOLBF, 0)
 
 Pref.registerDefaults()
 
 let arguments = Set(CommandLine.arguments.dropFirst())
-let known: Set<String> = ["--dump", "--verbose", "--background"]
+let known: Set<String> = ["--dump", "--verbose", "--background", "--check"]
 if !arguments.isSubset(of: known) {
-    print("Usage: wacom-bamboo [--dump] [--verbose] [--background]")
+    print("Usage: wacom-bamboo [--dump] [--verbose] [--background] [--check]")
     exit(2)
+}
+
+if arguments.contains("--check") {
+    let input = IOHIDCheckAccess(kIOHIDRequestTypeListenEvent)
+    print("Accessibility (move pointer): \(CGPreflightPostEventAccess() ? "granted" : "NOT granted")")
+    print("Input Monitoring (read tablet): \(input == kIOHIDAccessTypeGranted ? "granted" : "NOT granted")")
+    exit(0)
 }
 
 if arguments.contains("--dump") {

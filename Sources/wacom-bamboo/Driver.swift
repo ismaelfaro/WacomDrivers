@@ -44,8 +44,9 @@ final class Driver {
     var penInRange = false
     var penEraser = false
     /// Actions currently held down, so a release runs the same action even if the setting changed.
-    /// Keys 0 and 1 are pen side buttons; express keys use their ExpressKeys raw bit.
+    /// Pen side buttons use 100 and 101; express keys use their ExpressKeys raw bit (1, 2, 4, 8).
     var heldActions: [Int: Action] = [:]
+    private static let penSlotBase = 100
 
     var fingers: [Int: (x: Int, y: Int, time: TimeInterval)] = [:]
     var gestureStart: TimeInterval?
@@ -208,18 +209,19 @@ final class Driver {
     }
 
     private func sideButton(_ index: Int, pressed: Bool, action: Action, at position: CGPoint) {
-        let isDown = heldActions[index] != nil
+        let slot = Self.penSlotBase + index
+        let isDown = heldActions[slot] != nil
         guard pressed != isDown else { return }
         if pressed {
-            runAction(action, down: true, at: position, slot: index)
-        } else if let held = heldActions[index] {
-            runAction(held, down: false, at: position, slot: index)
+            runAction(action, down: true, at: position, slot: slot)
+        } else if let held = heldActions[slot] {
+            runAction(held, down: false, at: position, slot: slot)
         }
     }
 
     private func leavePen() {
         let position = pointer.location
-        for slot in [0, 1] where heldActions[slot] != nil {
+        for slot in [Self.penSlotBase, Self.penSlotBase + 1] where heldActions[slot] != nil {
             runAction(heldActions[slot]!, down: false, at: position, slot: slot)
         }
         pointer.releaseAll()

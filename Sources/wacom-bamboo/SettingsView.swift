@@ -5,6 +5,8 @@ import SwiftUI
 /// Live connection state, updated from the driver's connection callback on the main run loop.
 final class TabletStatus: ObservableObject {
     @Published var name: String?
+    /// False while Accessibility or Input Monitoring is missing, e.g. after the app was rebuilt.
+    @Published var permissionsOK = true
 }
 
 struct SettingsView: View {
@@ -43,12 +45,28 @@ private struct HeaderCard: View {
                         .font(.callout)
                         .foregroundStyle(.secondary)
                 }
+                if !status.permissionsOK {
+                    HStack(spacing: 6) {
+                        Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.orange)
+                        Text("Permissions missing. The pointer won't move.").font(.callout)
+                    }
+                    HStack(spacing: 8) {
+                        Button("Accessibility…") { openPrivacy("Privacy_Accessibility") }
+                        Button("Input Monitoring…") { openPrivacy("Privacy_ListenEvent") }
+                    }
+                }
             }
             Spacer()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
         .background(.quaternary)
+    }
+}
+
+private func openPrivacy(_ pane: String) {
+    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?\(pane)") {
+        NSWorkspace.shared.open(url)
     }
 }
 

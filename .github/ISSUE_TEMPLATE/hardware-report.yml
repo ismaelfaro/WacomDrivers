@@ -1,0 +1,37 @@
+name: Hardware report
+description: Report how a Wacom Bamboo model behaves with this driver (helps verify untested models)
+title: "[hardware] <model> on macOS <version>"
+labels: ["hardware-report"]
+body:
+  - type: input
+    id: model
+    attributes:
+      label: Tablet model
+      description: Name and USB product ID, e.g. Bamboo Create CTH-670, 056a:00df
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and chip
+      description: e.g. macOS 14.5, Intel / Apple Silicon
+    validations:
+      required: true
+  - type: textarea
+    id: works
+    attributes:
+      label: What works and what does not
+      description: Pen move, pressure, side buttons, eraser, one finger, tap, pan, pinch, rotate, express keys 1-4
+    validations:
+      required: true
+  - type: textarea
+    id: dump
+    attributes:
+      label: Raw reports (optional but very useful)
+      description: Output of `.build/release/wacom-bamboo --dump`. Hover the pen, draw, press each key, touch with one and two fingers. A few dozen lines is enough.
+      render: text
+  - type: textarea
+    id: corners
+    attributes:
+      label: Pen range (optional)
+      description: Largest X and Y values you see in the pen packets (bytes 2-3 and 4-5, little endian) when the pen is in each corner.

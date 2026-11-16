@@ -1,0 +1,35 @@
+{
+  "vendorID": 1386,
+  "penMaxPressure": 1023,
+  "touchMax": 4096,
+  "models": [
+    {
+      "productID": 221,
+      "name": "Bamboo Connect CTL-470",
+      "penMaxX": 14720,
+      "penMaxY": 9200,
+      "widthMM": 147.2,
+      "heightMM": 92.0,
+      "verified": false
+    },
+    {
+      "productID": 222,
+      "name": "Bamboo Capture CTH-470",
+      "penMaxX": 14720,
+      "penMaxY": 9200,
+      "widthMM": 147.2,
+      "heightMM": 92.0,
+      "verified": false
+    },
+    {
+      "productID": 223,
+      "name": "Bamboo Create CTH-670",
+      "penMaxX": 21648,
+      "penMaxY": 13700,
+      "widthMM": 216.48,
+      "heightMM": 137.0,
+      "verified": true,
+      "note": "Detected and driven on hardware; pen X/Y maximum not calibrated (see docs/STATUS.md)."
+    }
+  ]
+}
