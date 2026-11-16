@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let showSettingsAtLaunch: Bool
     private var statusItem: NSStatusItem!
     private let statusLine = NSMenuItem(title: "Tablet not connected", action: nil, keyEquivalent: "")
+    private let status = TabletStatus()
     private var window: NSWindow?
 
     init(driver: Driver, showSettingsAtLaunch: Bool) {
@@ -30,6 +31,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         driver.onConnectionChange = { [weak self] name in
             self?.statusLine.title = name.map { "\($0) connected" } ?? "Tablet not connected"
+            self?.status.name = name
         }
         requestPermissions()
         driver.start()
@@ -50,7 +52,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func openSettings() {
         if window == nil {
-            let created = NSWindow(contentViewController: NSHostingController(rootView: SettingsView()))
+            let created = NSWindow(contentViewController: NSHostingController(rootView: SettingsView(status: status)))
             created.title = "Wacom Bamboo"
             created.styleMask = [.titled, .closable, .miniaturizable]
             created.isReleasedWhenClosed = false
