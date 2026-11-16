@@ -1,6 +1,6 @@
-# Wacom Bamboo for macOS
+# Open Wacom Bamboo Mac Drivers
 
-**An unofficial, open-source macOS driver for Wacom Bamboo tablets** (Bamboo Create **CTH-670**, tested;
+**Open Wacom Bamboo Mac Drivers: an unofficial, open-source macOS driver for Wacom Bamboo tablets** (Bamboo Create **CTH-670**, tested;
 Bamboo Connect **CTL-470** and Bamboo Capture **CTH-470**, same protocol, untested). A small menu-bar app
 turns the tablet into a pen with pressure, a touch surface with gestures, and four programmable keys.
 Use it when the official Wacom driver is missing or not working for your tablet.
